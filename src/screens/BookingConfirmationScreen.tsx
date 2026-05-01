@@ -5,6 +5,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@/navigation/types';
 import { useBookingsStore } from '@/store/bookingsStore';
 import { theme } from '@/theme';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Route = RouteProp<RootStackParamList, 'BookingConfirmation'>;
 type Nav = NativeStackNavigationProp<RootStackParamList, 'BookingConfirmation'>;
@@ -21,6 +22,7 @@ export const BookingConfirmationScreen = () => {
   const addBooking = useBookingsStore((s) => s.addBooking);
   const isSlotBooked = useBookingsStore((s) => s.isSlotBooked);
   const [submitting, setSubmitting] = useState(false);
+  const insets = useSafeAreaInsets()
 
   const alreadyBooked = isSlotBooked(slot.doctorId, slot.startISO);
 
@@ -43,7 +45,7 @@ export const BookingConfirmationScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingBottom: insets.bottom + theme.spacing.lg }]} >
       <View style={styles.card} testID="confirmation-card">
         <Text style={styles.label}>Doctor</Text>
         <Text style={styles.value}>{doctor.name}</Text>
